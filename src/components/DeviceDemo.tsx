@@ -245,7 +245,7 @@ const DeviceDemo = (props: any) => {
                 <div className="text-center mb-4">
                   <strong>Report Details:</strong>
                 </div>
-                <form role="form">
+                <form>
                   <div className="form-group">
                     <div className="input-group input-group-merge input-group-alternative mb-3">
                       <div className="input-group-prepend">
@@ -320,7 +320,6 @@ const DeviceDemo = (props: any) => {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

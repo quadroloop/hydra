@@ -10,7 +10,7 @@ const Mapbox = (props) => {
       container: document.getElementById("map"),
       style: "mapbox://styles/bryce06/ckaupxv3j2chg1ip6lnzupz8b",
       center: [getCurrentLocation().long, getCurrentLocation().lat],
-      zoom: 13,
+      zoom: 9.5,
     });
 
     // update incident layer data by localStorage
@@ -62,6 +62,13 @@ const Mapbox = (props) => {
 
           el.addEventListener("click", function () {
             let xid = marker.properties.uid;
+
+            // open sidebar (for mobile view)
+
+            let sidebar = document.getElementById(
+              "event-thread"
+            ) as HTMLElement;
+            sidebar.style.display = "block";
 
             let cardInstance = document.getElementById(`ec-${xid}`);
 
@@ -216,88 +223,6 @@ const Mapbox = (props) => {
       });
 
       InitReportLayer();
-
-      // load covid heat map
-      // map.addSource("covid-data", {
-      //   type: "geojson",
-      //   data: props.covidMap
-      // });
-
-      //   map.addLayer(
-      //     {
-      //       id: "covid-cases",
-      //       type: "heatmap",
-      //       source: "covid-data",
-      //       maxzoom: 20,
-      //       layout: {
-      //         visibility: "none"
-      //       },
-      //       paint: {
-      //         // Increase the heatmap weight based on frequency and property magnitude
-      //         "heatmap-weight": [
-      //           "interpolate",
-      //           ["linear"],
-      //           ["get", "mag"],
-      //           0,
-      //           0,
-      //           6,
-      //           1
-      //         ],
-      //         // Increase the heatmap color weight weight by zoom level
-      //         // heatmap-intensity is a multiplier on top of heatmap-weight
-      //         "heatmap-intensity": [
-      //           "interpolate",
-      //           ["linear"],
-      //           ["zoom"],
-      //           0,
-      //           1,
-      //           9,
-      //           3
-      //         ],
-      //         // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-      //         // Begin color ramp at 0-stop with a 0-transparancy color
-      //         // to create a blur-like effect.
-      //         "heatmap-color": [
-      //           "interpolate",
-      //           ["linear"],
-      //           ["heatmap-density"],
-      //           0,
-      //           "rgba(33,102,172,0)",
-      //           0.2,
-      //           "rgb(103,169,207)",
-      //           0.4,
-      //           "rgb(209,229,240)",
-      //           0.6,
-      //           "rgb(253,219,199)",
-      //           0.8,
-      //           "rgb(239,138,98)",
-      //           1,
-      //           "rgb(178,24,43)"
-      //         ],
-      //         // Adjust the heatmap radius by zoom level
-      //         "heatmap-radius": [
-      //           "interpolate",
-      //           ["linear"],
-      //           ["zoom"],
-      //           0,
-      //           2,
-      //           9,
-      //           20
-      //         ],
-      //         // Transition from heatmap to circle layer by zoom level
-      //         "heatmap-opacity": [
-      //           "interpolate",
-      //           ["linear"],
-      //           ["zoom"],
-      //           7,
-      //           1,
-      //           9,
-      //           0.2
-      //         ]
-      //       }
-      //     },
-      //     "waterway-label"
-      //   );
     });
 
     const toggleCovidLayer = () => {
@@ -308,12 +233,6 @@ const Mapbox = (props) => {
         map.setLayoutProperty("covid-cases", "visibility", "none");
       }
     };
-
-    // map.on("click", e => {
-    //   let ncoords = { lat: e.lngLat.wrap().lat, long: e.lngLat.wrap().lng };
-    //   localStorage.dtype = "coordinates";
-    //   localStorage.currentLocation = JSON.stringify(ncoords);
-    // });
 
     function mapTo() {
       let currentLocation = JSON.parse(localStorage.currentLocation);
