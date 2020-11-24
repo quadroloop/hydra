@@ -57,7 +57,7 @@ const Mapbox = (props) => {
 
           el.innerHTML = `<i class="la ${
             marker.properties.type === "emergency" ? "la-bolt" : "la-fish"
-          } la-3x text-white"></i>`;
+          } text-white"></i>`;
 
           el.addEventListener("click", function () {
             let xid = marker.properties.uid;
@@ -205,6 +205,7 @@ const Mapbox = (props) => {
           "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
           "text-offset": [0, 0.6],
           "text-anchor": "top",
+          "text-size": 12,
         },
         paint: {
           "text-color": "#ffffff",

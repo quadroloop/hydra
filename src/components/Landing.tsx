@@ -68,8 +68,8 @@ const Landing = (props: any) => {
                 </a>
               </li>
               <li className="nav-item">
-                <a href="/Incidents" className="nav-link">
-                  <span className="nav-link-inner--text">Incidents</span>
+                <a href="/analytics" className="nav-link">
+                  <span className="nav-link-inner--text">Analytics</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -184,6 +184,14 @@ const Landing = (props: any) => {
                 alt="Dashboard visual"
               />
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="mb-7">
+          <div className="container">
+            <hr />
           </div>
         </div>
       </div>

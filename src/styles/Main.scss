@@ -1,7 +1,8 @@
 .dashboard-content {
+  $left-spacer: 60px;
   min-height: 100vh;
-  width: 95%;
-  margin-left: 70px;
+  width: calc(100%-$left-spacer);
+  margin-left: $left-spacer;
   background: #253a5a;
 
   h1,
@@ -21,11 +22,19 @@
       display: flex;
       justify-content: space-between;
       width: 100%;
+      padding: 0px 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+
+      h1 {
+        font-weight: 100;
+        font-size: 23px;
+      }
 
       .search-input {
         padding: 10px 20px;
         border-radius: 25px;
-        width: 300px;
+        width: 290px;
         outline: none;
         border: 2px solid #2868cf;
         color: #fff;
@@ -151,11 +160,13 @@ Usage
 // table content
 
 .table-content {
+  margin: auto;
   margin-top: -90px;
   // margin-left: -80px;
   display: flex;
   justify-content: center;
   width: 100%;
+  max-width: 1500px;
 
   .table {
     box-shadow: none !important;
@@ -301,6 +312,10 @@ Usage
     justify-content: space-between;
     box-shadow: 7px 0px 15px -2px rgba(0, 0, 0, 0.253);
 
+    i {
+      margin: auto 0px;
+    }
+
     h1 {
       font-size: 30px;
       text-align: right;
@@ -373,6 +388,104 @@ Usage
       color: rgb(163, 45, 41);
       border-bottom: 2px solid #9b1431;
     }
+  }
+}
+
+.search-icon {
+  $size: 50px;
+  background: #051d41;
+  height: $size;
+  width: $size;
+  display: grid;
+  border-radius: 100%;
+  margin-left: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+
+  i {
+    color: #fff;
+    margin: auto;
+    font-size: 20px;
+  }
+
+  &:hover {
+    background: #072c64;
+    box-shadow: 0px 0px 5px 0px rgba(46, 184, 226, 0.726);
+    transition: 0.3s;
+
+    i {
+      color: #40f5e6;
+
+      &.la-close {
+        color: #e65d7b;
+      }
+    }
+  }
+}
+
+// logo polygon
+
+.logo-polygon {
+  $size: 36px;
+  height: $size;
+  width: $size;
+  border: 0.3px solid rgb(13, 70, 134);
+  position: absolute;
+  left: 12px;
+  top: 22px;
+  transform: rotate(45deg);
+  transition: 0.3s;
+  box-shadow: 0px 0px 5px 0px rgba(28, 212, 218, 0.363);
+
+  &:hover {
+    border: 0.3px solid rgb(13, 70, 134);
+    transition: 0.3s;
+  }
+}
+
+.device-type-nav {
+  background: #051c3f;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  overflow: hidden;
+  overflow-x: auto;
+  display: flex;
+  box-shadow: 0px 9px 13px 3px rgba(11, 41, 68, 0.466);
+
+  .device-type {
+    padding: 5px 20px;
+    border-radius: 3px;
+    margin-right: 15px;
+    color: grey;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: #052555;
+      color: lightgrey;
+    }
+
+    &.active {
+      background: linear-gradient(to right, #6fb1fc, #4364f7, #07409c);
+      color: #fff;
+      box-shadow: 0px 0px 5px 0px rgba(82, 24, 241, 0.849);
+    }
+  }
+}
+
+.area-card {
+  background: #051c3f;
+  width: 100%;
+  margin-left: 20px;
+  border-radius: 5px;
+  padding: 20px 30px;
+
+  h1 {
+    color: #40f5e6 !important;
+    font-weight: 100;
+    border-bottom: 3px solid #40f5e6;
+    width: fit-content;
   }
 }
 

@@ -7,10 +7,11 @@ import "toastify-js/src/toastify.css";
 import "./styles/Map.scss";
 import "./styles/Main.scss";
 import "./styles/Animations.scss";
-import Incidents from "./components/Incidents";
 import Advisories from "./components/Advisories";
 import Devices from "./components/Devices";
 import DeviceDemo from "./components/DeviceDemo";
+import DeviceRegistry from "./components/DeviceRegistry";
+import Analytics from "./components/Analytics";
 
 function App() {
   return (
@@ -26,8 +27,8 @@ function App() {
               <Map />
             </Route>
 
-            <Route path="/incidents">
-              <Incidents />
+            <Route path="/analytics">
+              <Analytics />
             </Route>
 
             <Route path="/advisories">
@@ -36,6 +37,10 @@ function App() {
 
             <Route path="/device-list">
               <Devices />
+            </Route>
+
+            <Route path="/device-registry">
+              <DeviceRegistry />
             </Route>
 
             <Route path="/report/demo">

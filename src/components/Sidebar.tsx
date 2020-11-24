@@ -13,14 +13,19 @@ const Links = [
     icon: "la-map",
   },
   {
-    name: "Emergencies",
-    link: "/incidents",
-    icon: "la-exclamation-circle",
+    name: "Analytics",
+    link: "/analytics",
+    icon: "la-line-chart",
   },
   {
     name: "Devices",
     link: "/device-list",
     icon: "la-list",
+  },
+  {
+    name: "Device Registry",
+    link: "/device-registry",
+    icon: "la-layer-group",
   },
   {
     name: "Report Demo",
@@ -32,6 +37,7 @@ const Links = [
 const Sidebar = (props: any) => {
   return (
     <div className="sidebar">
+      <div className="logo-polygon" />
       <Link to="/">
         <img src="hlogo.png" alt="h-logo" className="landing-logo" />
       </Link>
@@ -41,7 +47,7 @@ const Sidebar = (props: any) => {
           return (
             <Link to={item.link}>
               <i
-                className={`la la-2x ${item.icon} ${
+                className={`la la-1x nav-icon ${item.icon} ${
                   item.name === props.active ? "active" : ""
                 }`}
                 title={item.name}

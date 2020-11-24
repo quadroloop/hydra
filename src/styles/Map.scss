@@ -1,18 +1,19 @@
 .sidebar {
   position: fixed;
   height: 100vh;
-  width: 70px;
-  background: rgb(11, 11, 49);
+  width: 60px;
+  background: rgb(5, 22, 44);
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 50;
   box-shadow: 7px 0px 15px -2px rgba(0, 0, 0, 0.253);
+  overflow: hidden;
+  overflow-y: auto;
 
   .landing-logo {
-    height: 50px;
-    width: 50px;
+    width: 60px;
   }
 
   .nav-items {
@@ -27,15 +28,16 @@
       padding: 5px;
       cursor: pointer;
       transition: 0.3s;
+      font-size: 25px;
 
       &:hover {
         color: #fff;
       }
 
       &.active {
-        color: #fff;
-        background: rgb(36, 126, 230);
-        border-radius: 3px;
+        color: rgb(33, 243, 198);
+        background: rgb(9, 74, 148);
+        border-radius: 2px;
       }
     }
   }
@@ -51,7 +53,8 @@
       width: $size;
       border-radius: $size;
       object-fit: cover;
-      border: 3px solid rgb(57, 209, 163);
+      border: 2px solid rgb(57, 209, 163);
+      box-shadow: 0px 0px 5px 0px rgba(28, 218, 176, 0.658);
     }
   }
 }
@@ -95,7 +98,7 @@
   margin-bottom: 10px;
   cursor: pointer;
   transition: 0.3s;
-  color: #fff;
+  color: rgb(150, 150, 150);
 
   span {
     strong {
@@ -108,6 +111,7 @@
     padding-bottom: 5px;
     margin-bottom: 5px;
     text-transform: uppercase;
+    color: #fff;
 
     i {
       background: rgba(216, 172, 51, 0.932);
@@ -126,7 +130,8 @@
 
   &:hover {
     transition: 0.3s;
-    box-shadow: 0px 0px 12px 3px rgba(245, 245, 245, 0.137);
+    color: #fff;
+    box-shadow: 0px 0px 12px 3px rgba(7, 95, 107, 0.397);
   }
 }
 
@@ -141,7 +146,7 @@
 
 #map {
   height: 100%;
-  margin-left: 65px;
+  margin-left: 60px;
 }
 
 .event-alert {
@@ -178,7 +183,7 @@
 
 @keyframes pulse-alert {
   0% {
-    box-shadow: 0px 0px 0px 0px rgb(199, 133, 48);
+    box-shadow: 0px 0px 0px 0px rgba(245, 164, 59, 0.507);
   }
   100% {
     box-shadow: 0px 0px 0px 20px rgba(0, 0, 0, 0);
@@ -189,10 +194,21 @@
   border-radius: 100px;
   animation: pulse-alert 1.5s infinite ease-out;
   background: rgba(192, 46, 46, 0.925);
+  display: grid;
   margin: auto;
 
   &.map-icon {
     top: -10px;
+    cursor: pointer;
+
+    $size: 20px;
+    width: $size;
+    height: $size;
+
+    i {
+      margin: auto;
+      font-size: 15px;
+    }
   }
 
   &.fishing-bg {
@@ -200,11 +216,14 @@
   }
 
   &.marker-selected {
-    background: rgba(28, 149, 230, 0.925);
+    // background: rgba(28, 149, 230, 0.925);
+    background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+    animation: pulse-selected 1s infinite ease-out;
   }
 
   &.mast {
-    background: rgba(28, 149, 230, 0.925);
+    background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+    animation: pulse-selected 1s infinite ease-out;
   }
 }
 
