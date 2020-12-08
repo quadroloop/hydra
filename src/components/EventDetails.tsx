@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
-import { API_URL, Toast, googleMapsAPIKEY, getCurrentLocation } from "./utils";
+import {
+  API_URL,
+  Toast,
+  googleMapsAPIKEY,
+  getCurrentLocation,
+  clearEventLinePath,
+} from "./utils";
 import nprogress from "nprogress";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
@@ -25,6 +31,7 @@ const EventDetails = (props: any) => {
       .then((res) => {
         if (res.data.message === "Successfully confirmed report") {
           setVerify(false);
+          clearEventLinePath();
           Toast("Report Confirmed!", "/incidents");
           props.goBack();
           nprogress.done();
@@ -53,6 +60,11 @@ const EventDetails = (props: any) => {
       });
   };
 
+  const cancelEventReview = () => {
+    clearEventLinePath();
+    props.goBack();
+  };
+
   useEffect(() => {
     fetchLocationDetails();
   }, []);
@@ -64,7 +76,7 @@ const EventDetails = (props: any) => {
           <i className="la la-bars mr-2" />
           Event Details
         </span>
-        <button className="btn btn-sm btn-dark" onClick={props.goBack}>
+        <button className="btn btn-sm btn-dark" onClick={cancelEventReview}>
           Go Back <i className="ml-2 la la-arrow-right" />
         </button>
       </div>
@@ -88,7 +100,10 @@ const EventDetails = (props: any) => {
       <strong className="text-warning">{event.title}</strong>
       <h2 className="pb-2 text-white">
         {locationData ? (
-          locationData.plus_code.compound_code
+          <>
+            {event.fma && <span className="text-active">[{event.fma}]</span>}{" "}
+            {locationData.plus_code.compound_code}
+          </>
         ) : (
           <SkeletonTheme color="#202020" highlightColor="#333">
             <p>
@@ -121,10 +136,10 @@ const EventDetails = (props: any) => {
           </span>
           <span>
             <strong>Date & Time:</strong>{" "}
-            {moment(event.date).format("MMM D, YYYY - h:mm:ss A")}
+            {moment(event.date_reported).format("MMM D, YYYY - h:mm:ss A")}
           </span>
           <span>
-            <strong>Duration</strong> {moment(event.date).fromNow()}
+            <strong>Duration</strong> {moment(event.date_reported).fromNow()}
           </span>
         </div>
       )}
@@ -134,12 +149,34 @@ const EventDetails = (props: any) => {
           <i className="la la-map-marker mr-1 bg-primary" /> Geolocation Info
         </strong>
         <span>
-          <strong>Long:</strong> {event.coordinates.long}
+          <strong>Longitude:</strong> {event.coordinates.long}
         </span>
         <span>
-          <strong>Lat:</strong> {event.coordinates.lat}
+          <strong>Latitude:</strong> {event.coordinates.lat}
         </span>
       </div>
+
+      {event.updates &&
+        event.updates.map((data: any, index: number) => {
+          return (
+            <div className="event-card">
+              <strong className="event-card-header">
+                <i className="la la-bullseye mr-1 bg-warning" /> Report Location
+                Update: #{index + 1}
+              </strong>
+              <span>
+                <strong>Longitude:</strong> {data.coordinates.long}
+              </span>
+              <span>
+                <strong>Latitude:</strong> {data.coordinates.lat}
+              </span>
+              <span>
+                <strong>Date:</strong>{" "}
+                {moment(data.date).format("MMM. D, YYYY - hh:mm:ss a")}
+              </span>
+            </div>
+          );
+        })}
 
       <div className="d-flex justify-content-center mt-4">
         <button
@@ -152,7 +189,7 @@ const EventDetails = (props: any) => {
         <button
           className="btn btn-warning"
           id="r-cancel"
-          onClick={props.goBack}
+          onClick={cancelEventReview}
         >
           <i className="la la-close mr-1" />
           Cancel

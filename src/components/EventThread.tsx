@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EventDetails from "./EventDetails";
 import moment from "moment";
-import { seCurrentLocation, soundNotif } from "./utils";
+import { seCurrentLocation, soundNotif, setCurrentIncident } from "./utils";
 import EventSkeleton from "./EventSkeleton";
 import { API_URL, eventSpike } from "./utils";
 import axios from "axios";
@@ -75,6 +75,8 @@ const EventThread = (props: any) => {
     let mapBtn = document.getElementById("mapJump") as HTMLButtonElement;
     seCurrentLocation(data.coordinates);
     setReport(data);
+    setCurrentIncident(data);
+
     toggleDetails();
 
     if (document.contains(mapBtn)) {
@@ -89,7 +91,21 @@ const EventThread = (props: any) => {
       } else {
         targetMarker.classList.add("marker-selected");
       }
+
+      // show location updates
+      let locupdateMarkers: any = document.querySelectorAll(`.lu-${data.id}`);
+      locupdateMarkers.forEach((lu: any) => {
+        lu.style.display = "flex";
+      });
     }
+  };
+
+  const backtoThread = () => {
+    let locupdateMarkers: any = document.querySelectorAll(`.lu-${report.id}`);
+    locupdateMarkers.forEach((lu: any) => {
+      lu.style.display = "none";
+    });
+    toggleDetails();
   };
 
   const showSidebar = () => {
@@ -168,11 +184,14 @@ const EventThread = (props: any) => {
                         <strong>Reportee:</strong> {event.reportee}
                       </span>
                       <span>
-                        <strong>Date & Time:</strong>{" "}
-                        {moment(event.date).format("MMM D, YYYY - h:mm:ss A")}
+                        <strong>Date Reported:</strong>{" "}
+                        {moment(event.date_reported).format(
+                          "MMM D, YYYY - h:mm:ss A"
+                        )}
                       </span>
                       <span>
-                        <strong>Duration</strong> {moment(event.date).fromNow()}
+                        <strong>Duration</strong>{" "}
+                        {moment(event.date_reported).fromNow()}
                       </span>
                     </div>
                   );
@@ -199,7 +218,7 @@ const EventThread = (props: any) => {
           </div>
         )}
 
-        {details && <EventDetails goBack={toggleDetails} data={report} />}
+        {details && <EventDetails goBack={backtoThread} data={report} />}
       </div>
     </>
   );

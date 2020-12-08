@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import { mapbox_key, getCurrentLocation, fetchIncidentGeoJSON } from "./utils";
+import moment from "moment";
 
 mapboxgl.accessToken = mapbox_key;
 
@@ -15,6 +16,8 @@ const Mapbox = (props) => {
 
     const updateIncidentLayer = () => {
       let newlayerData = fetchIncidentGeoJSON();
+
+      console.log("Layer Data:", newlayerData);
 
       if (map.getSource("points")) {
         map.getSource("points").setData(newlayerData);
@@ -33,6 +36,13 @@ const Mapbox = (props) => {
 
         if (!pendingIncidents.includes(markid)) {
           document.querySelector(`.inm-${markid}`).remove();
+          // remove update markers as well
+          let locupdateMarkers: any = document.querySelectorAll(
+            `.lu-${mark.id}`
+          );
+          locupdateMarkers.forEach((lu: any) => {
+            lu.remove();
+          });
         }
       });
 
@@ -86,6 +96,32 @@ const Mapbox = (props) => {
           new mapboxgl.Marker(el)
             .setLngLat(marker.geometry.coordinates)
             .addTo(map);
+
+          // add map markers for earch report update point
+          marker.locationUpdates.forEach((update: any) => {
+            let xid = marker.properties.uid;
+
+            let formattedCoordinates = [
+              update.coordinates.long,
+              update.coordinates.lat,
+            ];
+            var elx = document.createElement("div");
+            elx.className = `marker-location-update lu-${xid}`;
+            elx.id = `mxu-${update.date}`;
+            elx.innerHTML = `
+            <small>
+              <span><strong>lat:</strong> ${update.coordinates.lat}</span><br>
+              <span><strong>long:</strong> ${update.coordinates.long}</span><br>
+              <span><strong>date:</strong> ${moment(update.date).format(
+                "MM-DD-YYYY | h:mm:ss A"
+              )}</span><br>
+            </small>
+            <div class="update-marker">
+            <div class="marker-dot"></div>
+            </div>
+            `;
+            new mapboxgl.Marker(elx).setLngLat(formattedCoordinates).addTo(map);
+          });
         }
       });
     };
@@ -223,16 +259,78 @@ const Mapbox = (props) => {
       });
 
       InitReportLayer();
+      addTrack();
     });
 
-    const toggleCovidLayer = () => {
-      let visibility = map.getLayoutProperty("covid-cases", "visibility");
-      if (visibility === "none") {
-        map.setLayoutProperty("covid-cases", "visibility", "visible");
-      } else {
-        map.setLayoutProperty("covid-cases", "visibility", "none");
+    // test get coordinates of every click
+    // const globalItem: any = window;
+    // globalItem.testPath = [];
+
+    // map.on("click", (e: any) => {
+    //   let nx = {
+    //     coordinates: {
+    //       long: e.lngLat.lng,
+    //       lat: e.lngLat.lat,
+    //     },
+    //     date: Date.now(),
+    //   };
+    //   globalItem.testPath.push(nx);
+    // });
+
+    function addTrack() {
+      map.addSource("route", {
+        type: "geojson",
+        lineMetrics: true,
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: [
+              // [120.70893, 14.56745],
+              // [120.72108, 14.58747],
+              // [120.7273, 14.59647],
+            ],
+          },
+        },
+      });
+      map.addLayer({
+        id: "route",
+        type: "line",
+        source: "route",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#6ff",
+          "line-width": 4,
+          "line-gradient": [
+            "interpolate",
+            ["linear"],
+            ["line-progress"],
+            0,
+            "blue",
+            0.1,
+            "royalblue",
+            0.3,
+            "cyan",
+            0.5,
+            "cyan",
+            1,
+            "blue",
+          ],
+        },
+      });
+    }
+
+    function updateEventLinePath() {
+      const global: any = window;
+
+      if (map.getSource("route")) {
+        map.getSource("route").setData(global.eventPath);
       }
-    };
+    }
 
     function mapTo() {
       let currentLocation = JSON.parse(localStorage.currentLocation);
@@ -243,18 +341,20 @@ const Mapbox = (props) => {
         speed: 1.25,
         essential: true,
       });
+
+      updateEventLinePath();
     }
 
     document.getElementById("mapJump").onclick = () => {
       mapTo();
     };
 
-    document.getElementById("showCovid").onclick = () => {
-      toggleCovidLayer();
-    };
-
     document.getElementById("incidents-btn").onclick = () => {
       updateIncidentLayer();
+    };
+
+    document.getElementById("incident-track").onclick = () => {
+      updateEventLinePath();
     };
   });
 
@@ -262,9 +362,9 @@ const Mapbox = (props) => {
     <>
       <button id="mapJump" className="d-none" />
       <button id="removeRoutes" className="d-none" />
-      <button id="showCovid" className="d-none" />
 
       <button id="incidents-btn" className="d-none" />
+      <button id="incident-track" className="d-none" />
 
       <div>
         <div id="map" className="absolute top right left" />

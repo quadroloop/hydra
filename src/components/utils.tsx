@@ -100,6 +100,7 @@ export const fetchIncidentGeoJSON = () => {
         uid: incident.id,
         type: incident.type,
       },
+      locationUpdates: incident.updates ? incident.updates : [],
     };
 
     baseDataLayer.features.push(pointData);
@@ -110,6 +111,50 @@ export const fetchIncidentGeoJSON = () => {
 
 export const soundNotif = () => {
   let audio = document.getElementById("sound-notif") as HTMLAudioElement;
-
   audio.play();
 };
+
+export const setCurrentIncident = (data: any) => {
+  global.currentIncident = data;
+
+  // Create route path.
+  let coordSet = [[data.coordinates.long, data.coordinates.lat]];
+
+  if (data.updates) {
+    data.updates.forEach((x) => {
+      coordSet.push([x.coordinates.long, x.coordinates.lat]);
+    });
+  }
+
+  let routeData = {
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "LineString",
+      coordinates: coordSet,
+    },
+  };
+
+  global.eventPath = routeData;
+};
+
+export const clearEventLinePath = () => {
+  let incidentTrackBtn: any = document.getElementById("incident-track");
+
+  let routeData = {
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "LineString",
+      coordinates: [],
+    },
+  };
+
+  global.eventPath = routeData;
+
+  if (incidentTrackBtn) {
+    incidentTrackBtn.click();
+  }
+};
+
+export const currentIncident = global.currentIncident;
