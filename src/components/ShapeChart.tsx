@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from "react";
 import { AreaClosed, Line, Bar } from "@vx/shape";
-import appleStock, { AppleStock } from "@vx/mock-data/lib/mocks/appleStock";
+import { AppleStock } from "@vx/mock-data/lib/mocks/appleStock";
 import { curveMonotoneX } from "@vx/curve";
 import { GridRows, GridColumns } from "@vx/grid";
 import { scaleTime, scaleLinear } from "@vx/scale";
@@ -11,9 +11,6 @@ import { LinearGradient } from "@vx/gradient";
 import { max, extent, bisector } from "d3-array";
 import { timeFormat } from "d3-time-format";
 
-type TooltipData = AppleStock;
-
-const stock = appleStock.slice(800);
 export const background = "#051C3F";
 export const background2 = "#204051";
 export const accentColor = "#C65859";
@@ -30,14 +27,19 @@ const formatDate = timeFormat("%b %d, '%y");
 
 // accessors
 const getDate = (d: AppleStock) => new Date(d.date);
-const getStockValue = (d: AppleStock) => d.close;
+const getStockValue = (d: any) => d.activityCount;
 const bisectDate = bisector<AppleStock, Date>((d) => new Date(d.date)).left;
 
 export type AreaProps = {
   width: number;
   height: number;
   margin?: { top: number; right: number; bottom: number; left: number };
+  chartData?:any;
 };
+
+type TooltipData = AppleStock;
+
+
 
 export default withTooltip<AreaProps, TooltipData>(
   ({
@@ -49,7 +51,14 @@ export default withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
+    chartData
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+
+// type TooltipData = AppleStock;
+let testData: any = chartData
+const stock = testData;
+
+
     if (width < 10) return null;
 
     // bounds
@@ -105,7 +114,7 @@ export default withTooltip<AreaProps, TooltipData>(
     );
 
     return (
-      <div>
+      <div className="fade-in dl-2">
         <svg width={width} height={height}>
           <rect
             x={0}
@@ -204,7 +213,7 @@ export default withTooltip<AreaProps, TooltipData>(
               left={tooltipLeft + 12}
               style={tooltipStyles}
             >
-              {`> ${getStockValue(tooltipData)}`}
+              {`Reported Incidents: ${getStockValue(tooltipData)}`}
             </Tooltip>
             <Tooltip
               top={yMax - 14}
