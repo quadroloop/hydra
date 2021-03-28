@@ -6,6 +6,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import nprogress from "nprogress";
 import LocationUpdates from "./LocationUpdates";
 import EventMast from "./EventMast";
+import FmaCard from "./FmaCard";
 
 const IncidentDetails = (props: any) => {
   const event = props.data;
@@ -102,6 +103,13 @@ const IncidentDetails = (props: any) => {
             )}
           </div>
 
+          {event.fma && (
+            <FmaCard
+              data={event.fma}
+              location={locationData && locationData.plus_code.compound_code}
+            />
+          )}
+
           {event && (
             <div className="event-details-card">
               <strong
@@ -149,6 +157,12 @@ const IncidentDetails = (props: any) => {
         </div>
 
         {event.updates && <LocationUpdates data={event.updates} />}
+
+        <div className="end-report-card">
+          <span>
+            <i className="la la-list" /> End of report
+          </span>
+        </div>
       </>
     </div>
   );

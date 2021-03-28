@@ -64,6 +64,21 @@ export const Toast = (message, url) => {
   }).showToast();
 };
 
+export const ErrorToast = (message) => {
+  Toastify({
+    text: message,
+    duration: 2000,
+    destination: "/analytics",
+    newWindow: false,
+    close: true,
+    gravity: "bottom", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    backgroundColor: "linear-gradient(to right, #c91821, #c91)",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    onClick: function () {}, // Callback after click
+  }).showToast();
+};
+
 export const eventSpike = () => {
   let sbtn = document.getElementById("activityBtn") as HTMLButtonElement;
   sbtn.click();
@@ -158,3 +173,41 @@ export const clearEventLinePath = () => {
 };
 
 export const currentIncident = global.currentIncident;
+
+export const fetchUser = () => {
+  if (localStorage.user) {
+    return JSON.parse(localStorage.user);
+  } else {
+    return {};
+  }
+};
+
+export const publishedList = [
+  {
+    title: "Presented potential use of Seantinel for Maritime Surveillance",
+    url: "https://www.facebook.com/oceana.ph/videos/261932312161995",
+  },
+  {
+    title: "Karagathon Presentation",
+    url: "https://www.youtube.com/watch?v=7L645X3v4mw&t=28s",
+  },
+  {
+    title: "About Karagathon",
+    url:
+      "https://www.facebook.com/oceana.ph/photos/a.820968671282627/3201295939916543/",
+  },
+  {
+    title: "Seantinel December 2020, Progress udpdate ",
+    url:
+      "https://sagipinas.now.sh/docs/seantinel#project-update-december-14-2020",
+  },
+  {
+    title: "Seantinel Project Documentation",
+    url: "https://sagipinas.now.sh/docs/seantinel",
+  },
+];
+
+export const clearSession = () => {
+  localStorage.removeItem("user");
+  window.location.reload();
+};

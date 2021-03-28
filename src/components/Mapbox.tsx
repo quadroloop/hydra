@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import { mapbox_key, getCurrentLocation, fetchIncidentGeoJSON } from "./utils";
 import moment from "moment";
+// import fma_data from "../dataset/fma.json";
 
 mapboxgl.accessToken = mapbox_key;
 
@@ -13,6 +14,12 @@ const Mapbox = (props) => {
       center: [getCurrentLocation().long, getCurrentLocation().lat],
       zoom: 9.5,
     });
+
+    // inspect fma data
+    // let fmaDelta: any = fma_data;
+    // let fmaTarget = fmaDelta.features[7];
+    // alert(fmaTarget.properties.FMA);
+    // console.log(fma_data);
 
     const updateIncidentLayer = () => {
       let newlayerData = fetchIncidentGeoJSON();
@@ -249,39 +256,38 @@ const Mapbox = (props) => {
       });
     };
 
-
     // ocean depth data
     const AddOceanDepthData = () => {
-      map.addSource('10m-bathymetry-81bsvj', {
-        type: 'vector',
-        url: 'mapbox://mapbox.9tm8dx88'
-        });
+      map.addSource("10m-bathymetry-81bsvj", {
+        type: "vector",
+        url: "mapbox://mapbox.9tm8dx88",
+      });
 
-        map.addLayer(
+      map.addLayer(
         {
-        'id': '10m-bathymetry-81bsvj',
-        'type': 'fill',
-        'source': '10m-bathymetry-81bsvj',
-        'source-layer': '10m-bathymetry-81bsvj',
-        'layout': {},
-        'paint': {
-        'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
-        // cubic bezier is a four point curve for smooth and precise styling
-        // adjust the points to change the rate and intensity of interpolation
-        'fill-color': [
-        'interpolate',
-        ['cubic-bezier', 0, 0.5, 1, 0.5],
-        ['get', 'DEPTH'],
-        200,
-        '#0A1027',
-        9000,
-        '#261e5c'
-        ]
-        }
+          id: "10m-bathymetry-81bsvj",
+          type: "fill",
+          source: "10m-bathymetry-81bsvj",
+          "source-layer": "10m-bathymetry-81bsvj",
+          layout: {},
+          paint: {
+            "fill-outline-color": "hsla(337, 82%, 62%, 0)",
+            // cubic bezier is a four point curve for smooth and precise styling
+            // adjust the points to change the rate and intensity of interpolation
+            "fill-color": [
+              "interpolate",
+              ["cubic-bezier", 0, 0.5, 1, 0.5],
+              ["get", "DEPTH"],
+              200,
+              "#0A1027",
+              9000,
+              "#261e5c",
+            ],
+          },
         },
-        'land-structure-polygon'
-        );
-    }
+        "land-structure-polygon"
+      );
+    };
 
     map.on("load", () => {
       map.addSource("points", {
@@ -294,7 +300,25 @@ const Mapbox = (props) => {
 
       InitReportLayer();
       addTrack();
-      AddOceanDepthData()
+      // AddOceanDepthData();
+
+      // map.addSource("maine", {
+      //   type: "geojson",
+      //   data: {
+      //     type: "Feature",
+      //     geometry: fmaTarget.geometry,
+      //   },
+      // });
+      // map.addLayer({
+      //   id: "maine",
+      //   type: "fill",
+      //   source: "maine",
+      //   layout: {},
+      //   paint: {
+      //     "fill-color": "#57b8f0",
+      //     "fill-opacity": 0.5,
+      //   },
+      // });
     });
 
     // test get coordinates of every click
@@ -357,6 +381,8 @@ const Mapbox = (props) => {
           ],
         },
       });
+
+      // add fma data
     }
 
     function updateEventLinePath() {

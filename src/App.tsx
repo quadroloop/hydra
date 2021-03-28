@@ -8,12 +8,14 @@ import "./styles/Map.scss";
 import "./styles/Cards.scss";
 import "./styles/Main.scss";
 import "./styles/Modal.scss";
+import "./styles/Users.scss";
 import "./styles/Animations.scss";
 import Advisories from "./components/Advisories";
 import Devices from "./components/Devices";
 import DeviceDemo from "./components/DeviceDemo";
 import DeviceRegistry from "./components/DeviceRegistry";
 import Analytics from "./components/Analytics";
+import LoginPage from "./components/LoginPage";
 
 function App() {
   return (
@@ -47,6 +49,10 @@ function App() {
 
             <Route path="/report/demo">
               <DeviceDemo />
+            </Route>
+
+            <Route path="/admin/login">
+              <LoginPage />
             </Route>
           </Switch>
         </div>

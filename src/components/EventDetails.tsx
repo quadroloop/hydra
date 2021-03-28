@@ -7,11 +7,13 @@ import {
   googleMapsAPIKEY,
   getCurrentLocation,
   clearEventLinePath,
+  fetchUser,
 } from "./utils";
 import nprogress from "nprogress";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import LocationUpdates from "./LocationUpdates";
 import EventMast from "./EventMast";
+import FmaCard from "./FmaCard";
 
 const EventDetails = (props: any) => {
   const event = props.data;
@@ -145,10 +147,27 @@ const EventDetails = (props: any) => {
           </span>
         </div>
 
+        {event.fma && (
+          <FmaCard
+            data={event.fma}
+            location={locationData && locationData.plus_code.compound_code}
+          />
+        )}
+
         {event.updates && <LocationUpdates data={event.updates} />}
       </div>
 
-      <div className="event-action-buttons fade-in-bottom dl-2">
+      <div className="end-report-card">
+        <span>
+          <i className="la la-list" /> End of report
+        </span>
+      </div>
+
+      <div
+        className={`event-action-buttons fade-in-bottom dl-2 ${
+          fetchUser().name ? "d-block" : "d-none"
+        }`}
+      >
         <div className="d-flex justify-content-center">
           <button
             className="btn btn-success mr-4"
